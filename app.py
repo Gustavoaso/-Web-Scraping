@@ -41,7 +41,7 @@ def buscarDadosOlx(pages = 2, regiao = "PG"):
         print(page)
         soup = BeautifulSoup(page.content,'lxml')
         results = soup.find_all("li",{"class":"sc-lfcmfeb-2 ggOGT3"})
-        print(results   )
-
+        print(results)
+ 
 buscarDadosOlx()
     
