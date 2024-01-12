@@ -9,26 +9,28 @@ import time
 from datetime import date
 import re
 
-def buscarDadosOlx(pages = 2, regiao = "PG"):
-    regiaoBuscar = {"PG": "regiao-de-ponta-grossa-e-guarapuava", "CTBA":"regiao-de-curitiba-e-paranagua","SP": "sao-paulo-e-regiao"}
-    prefix  = {"PG":"pr","CTBA":"pr","SP":"sp"}
+def buscarDadosOlx(pages = 1, regiao = "MG"):
+    regiaoBuscar = {"MG": "belo-horizonte-e-regiao"}
+    prefix  = {"MG":"estado-mg"}
     for x in range(0,pages):
         print("LOOP NUMERO:" + str(x))
-        url = "https://" + prefix[regiao]+".olx.com.br/" + regiaoBuscar[regiao]+"/autos-e-pecas/carros-vans-e-utilitarios"
-        if x == 0 :
+
+     
+        url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao]
+        if x == 0:
             print("somente a primeira pagina")
         else:
-            url = "https://" + prefix[regiao]+".olx.com.br/" + regiaoBuscar[regiao]+"/autos-e-pecas/carros-vans-e-utilitarios?o="+str(x)+""
+            url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao]+"?o="+str(x)+""
             
         print(url)
 
         PARAMS = { 
 
-                    "authority":"pr.olx.com.br",
+                    "authority":"www.olx.com.br",
                     "method": "get",
-                    "path": "/regiao-de-ponta-grossa-e-guarapuava/autos-e-pecas/carros-vans-e-utilitarios",
+                    "path": "/autos-e-pecas/carros-vans-e-utilitarios/estado-mg/belo-horizonte-e-regiao",
                     "scheme":"https" ,
-                    "referer": "https://pr.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios",
+                    "referer": "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios",
                     "sec-fecth-mode": "navigate",
                     "sec-fetch-site": "same-origin",
                     "sec-fecth-user":"?1",
@@ -40,8 +42,16 @@ def buscarDadosOlx(pages = 2, regiao = "PG"):
         page = requests.get(url = url, headers = PARAMS)
         print(page)
         soup = BeautifulSoup(page.content,'lxml')
-        results = soup.find_all("li",{"class":"sc-lfcmfeb-2 ggOGT3"})
-        print(results)
- 
+        results = soup.find_all('h2', class_= "olx-text olx-text--title-small olx-text--block olx-ad-card__title olx-ad-card__title--vertical")
+        prices = soup.find_all("h3",class_= "olx-text olx-text--body-large olx-text--block olx-text--semibold olx-ad-card__price")
+        links = soup.find_all( "a", class_ = "olx-ad-card__title-link")
+       
+        num = 1
+        for result,price,link in zip(results,prices,links): 
+            print(f"{num} {result.text} {price.text} {link['href']} ")
+            num +=1
+            
+   
+
 buscarDadosOlx()
     
