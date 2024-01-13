@@ -45,10 +45,24 @@ def buscarDadosOlx(pages = 1, regiao = "MG"):
         results = soup.find_all('h2', class_= "olx-text olx-text--title-small olx-text--block olx-ad-card__title olx-ad-card__title--vertical")
         prices = soup.find_all("h3",class_= "olx-text olx-text--body-large olx-text--block olx-text--semibold olx-ad-card__price")
         links = soup.find_all( "a", class_ = "olx-ad-card__title-link")
+        locais = soup.find_all('p', class_= "olx-text olx-text--caption olx-text--block olx-text--regular")
+        kilometros = soup.find_all('li', class_= "olx-ad-card__labels-item")
+        
        
+        x = 0
         num = 1
-        for result,price,link in zip(results,prices,links): 
-            print(f"{num} {result.text} {price.text} {link['href']} ")
+        for result,price,link,local,km in zip(results,prices,links,locais,kilometros): 
+
+
+            km = kilometros[x]
+            cor = kilometros[x+1]
+            potencia = kilometros[x+2]
+            tipo = kilometros[x+3]
+            x = x + 4
+
+            dados =  f"{km.text}  | {cor.text} | {potencia.text} | {tipo.text} "
+
+            print(f"{num} {result.text} {price.text} {link['href']} {local.text} {dados} ")
             num +=1
             
    
