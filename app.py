@@ -8,11 +8,15 @@ from selenium import webdriver
 import time
 from datetime import date
 import re
+from datetime import datetime
+
+
+listaJson = []
 
 def buscarDadosOlx(pages = 1, regiao = "MG"):
     regiaoBuscar = {"MG": "belo-horizonte-e-regiao"}
     prefix  = {"MG":"estado-mg"}
-    for x in range(0,pages):
+    for x in range(pages):
         print("LOOP NUMERO:" + str(x))
 
      
@@ -46,26 +50,43 @@ def buscarDadosOlx(pages = 1, regiao = "MG"):
         prices = soup.find_all("h3",class_= "olx-text olx-text--body-large olx-text--block olx-text--semibold olx-ad-card__price")
         links = soup.find_all( "a", class_ = "olx-ad-card__title-link")
         locais = soup.find_all('p', class_= "olx-text olx-text--caption olx-text--block olx-text--regular")
-        kilometros = soup.find_all('li', class_= "olx-ad-card__labels-item")
+        
         
        
-        x = 0
-        num = 1
-        for result,price,link,local,km in zip(results,prices,links,locais,kilometros): 
+       
+        for result,price,link,local in zip(results,prices,links,locais): 
 
-
-            km = kilometros[x]
-            cor = kilometros[x+1]
-            potencia = kilometros[x+2]
-            tipo = kilometros[x+3]
-            x = x + 4
-
-            dados =  f"{km.text}  | {cor.text} | {potencia.text} | {tipo.text} "
-
-            print(f"{num} {result.text} {price.text} {link['href']} {local.text} {dados} ")
-            num +=1
+            pageCar = requests.get(url = link['href'], headers = PARAMS)
+            soupCar = BeautifulSoup(pageCar.content,'lxml')
+            car = soupCar.find_all('div',  class_ = 'olx-d-flex olx-ml-2 olx-ai-baseline olx-fd-column')
+          
+            json = { "nomeVeiculo" : result.text,
+                     "preçoVeiculo": price.text,
+                     "linkAnuncio" : link['href'],
+                     "LocalVeiculo" : local.text,         
+                    }
             
-   
+
+             
+            for div in car:
+                
+             spans = div.find_all('span', {'data-ds-component': 'DS-Text'})
+
+             
+             if spans[0].text == "Quilometragem":
+                    json.update({"Quilometragem": spans[1].text})
+
+             elif spans[0].text == "Ano":
+                      ano = div.find('a',{'data-ds-component':"DS-Link"})
+                      json.update({"Ano": ano.text})
+
+             elif spans[0].text == "Cor":
+                     json.update({"Cor": spans[1].text})
+
+            listaJson.append(json)
 
 buscarDadosOlx()
-    
+time = datetime.now().strftime("%Y%m%d_%H%M%S")
+nome = f"veiculos_{time}.xlsx"
+df  = pd.DataFrame(listaJson)
+df.to_excel(fr'C:\Users\gtvan\OneDrive\Área de Trabalho\Veiculos\{nome}',nome, engine = 'xlsxwriter' )
