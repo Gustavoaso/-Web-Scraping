@@ -13,18 +13,18 @@ from datetime import datetime
 
 listaJson = []
 
-def buscarDadosOlx(pages = 1, regiao = "MG"):
-    regiaoBuscar = {"MG": "belo-horizonte-e-regiao"}
+def buscarDadosOlx(pages = 62, regiao = "MG"):
+    regiaoBuscar = {"MG": "belo-horizonte-e-regiao" }
     prefix  = {"MG":"estado-mg"}
     for x in range(pages):
         print("LOOP NUMERO:" + str(x))
 
      
-        url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao]
+        url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao] + "/grande-belo-horizonte/betim" 
         if x == 0:
             print("somente a primeira pagina")
         else:
-            url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao]+"?o="+str(x)+""
+            url = "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/" + prefix[regiao] + "/" +regiaoBuscar[regiao]+ "/grande-belo-horizonte/betim" + "?o="+str(x)+""
             
         print(url)
 
@@ -84,6 +84,7 @@ def buscarDadosOlx(pages = 1, regiao = "MG"):
                      json.update({"Cor": spans[1].text})
 
             listaJson.append(json)
+
 
 buscarDadosOlx()
 time = datetime.now().strftime("%Y%m%d_%H%M%S")
