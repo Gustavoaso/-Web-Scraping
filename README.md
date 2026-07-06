@@ -26,7 +26,6 @@ Para começar a usar o projeto, siga estes passos:
 * Bibliotecas necessárias instaladas (`BeautifulSoup`, `requests`, `pandas`, `numpy`, `selenium`, `json`, `difflib`, `re`)
 ### Instalação
 * Clone o repositório usando `git clone`
-* Instale as bibliotecas necessárias usando `pip install -r requirements.txt`
 ### Execução local
 * Execute o script usando `python app.py`
 
@@ -37,7 +36,6 @@ Para utilizar o script, basta executar `python app.py` no seu terminal. O script
 ```markdown
 .
 ├── app.py
-├── requirements.txt
 ├── README.md
 └── data
     ├── json
