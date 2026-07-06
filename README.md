@@ -7,7 +7,7 @@ O Projeto de Web Scraping é um script desenvolvido em Python para extrair dados
 * Itera sobre um número especificado de páginas para coletar dados
 * Armazena os dados extraídos em formato JSON para facilitar a análise ou a integração com outras ferramentas
 * Utiliza as bibliotecas `BeautifulSoup` e `requests` para web scraping e requisições HTTP
-* Possibilidade de integração com ferramentas de armazenamento, processamento ou visualização de dados
+* Exporta os dados extraidos em arquivo Excel
 
 ## 🛠️ Stack Tecnológica
 * Biblioteca `BeautifulSoup` para análise de conteúdo HTML e extração de dados
@@ -37,7 +37,4 @@ Para utilizar o script, basta executar `python app.py` no seu terminal. O script
 .
 ├── app.py
 ├── README.md
-└── data
-    ├── json
-    └── csv
 ```
